@@ -19,8 +19,10 @@ python_ver_centos="3.9.16"
 python_ver_debian="3.9.16"
 # Red Hat дистрибутивы
 python_ver_rhel="3.9.16"
-# AltLinux
-python_ver_altlinux="3.9.16"
+# AltLinux 10
+python_ver_altlinux10="3.9.16"
+# AltLinux 8
+python_ver_altlinux8="3.9.16"
 # адрес pip репозитория DevPI
 python_devpi="repo.connect2ai.net"
 # заголовок установщика, хеш врутреннего архива, версия и релиз, меняются при сборки пакета
@@ -31,7 +33,7 @@ int_urs_install_dir="/opt/urs/pve"
 int_ses_install_dir="/opt/ses/pve"
 int_repo_url="https://repo.connect2ai.net/api"
 # каталог куда распакуется внутренний архив
-int_arch_dir="/tmp/archive"
+int_arch_dir="/tmp/archive_pve"
 # каталог системных пакетов созданных через --build
 int_arch_pack_dir="$int_arch_dir/packages"
 
@@ -65,7 +67,8 @@ packages_main_centos7=("python3-pip" "python3-devel" "libsndfile" "python3-wheel
                       "mariadb-devel.x86_64" "python3*-mysql.x86_64" "rustc" "cargo" "openssl" "openssl11" "openssl-devel" "openssl11-devel" "libffi" \
                       "libffi-devel" "zlib" "zlib-devel" "bzip2" "bzip2-devel" "libxml2" "libxml2-devel" \
                       "xmlsec1-openssl" "xmlsec1" "readline" "readline-devel" "sqlite" "sqlite-devel" \
-                      "xz" "xz-devel" "ffmpeg" "ffmpeg-devel" "sox" "jq" "checkpolicy" "policycoreutils-python")
+                      "xz" "xz-devel" "ffmpeg" "ffmpeg-devel" "sox" "jq" "checkpolicy" "policycoreutils-python" \
+					  "tesseract" "tesseract-devel" "tesseract-langpack-rus" "libreoffice")
 
 # Debian дистрибутивы
 # минимально необходимый набор системных пакетов
@@ -75,7 +78,8 @@ packages_main_debian=("python3-pip" "python3-dev" "libsndfile1" "python3-wheel" 
                       "libmariadb-dev" "python3-mysqldb" "rustc" "cargo" "openssl" "libssl-dev" "libncurses-dev" \
                       "libffi-dev" "zlib1g" "zlib1g-dev" "bzip2" "libbz2-dev" "libxml2" "libxml2-dev" \
                       "xmlsec1" "libxmlsec1-dev" "libreadline-dev" "sqlite3" \
-                      "libsqlite3-dev" "xz-utils" "lzma" "liblzma-dev" "ffmpeg" "sox" "jq")
+                      "libsqlite3-dev" "xz-utils" "lzma" "liblzma-dev" "ffmpeg" "sox" "jq" \
+					  "tesseract-ocr" "libtesseract-dev" "tesseract-ocr-rus" "libreoffice")
 
 # Red Hat дистрибутивы
 # минимально необходимый набор системных пакетов
@@ -86,52 +90,67 @@ packages_main_rhel=("python3-pip" "python3-devel" "libsndfile" "python3-wheel" "
                     "mariadb-devel.x86_64" "python3*-mysql.x86_64" "rustc" "cargo" "openssl" "openssl-devel" "libffi" \
                     "libffi-devel" "zlib" "zlib-devel" "bzip2" "bzip2-devel" "libxml2" "libxml2-devel" \
                     "xmlsec1-openssl" "xmlsec1" "readline" "readline-devel" "sqlite" "sqlite-devel" \
-                    "xz" "xz-devel" "ffmpeg" "ffmpeg-devel" "sox" "jq")
+                    "xz" "xz-devel" "ffmpeg" "ffmpeg-devel" "sox" "jq" "tesseract" "tesseract-devel" "tesseract-langpack-rus" "libreoffice")
 
-# Altlinux
+# Altlinux 10
 # минимально необходимый набор системных пакетов
-packages_system_altlinux=("python3" "openssl" "curl" "wget" "ca-certificates" "git" "patch" "cmake" "boost-devel" "apt-https" "gnupg2" "lsyncd" "unzip" "dmidecode")
+packages_system_altlinux10=("python3" "openssl" "curl" "wget" "ca-certificates" "git" "patch" "cmake" "boost-devel" "apt-https" "libksba" "gnupg2" "lsyncd" "unzip" "dmidecode")
 
 # остальные пакеты
-packages_main_altlinux=("rpm-build-python3" "python3-module-pip" "python3-dev" "libsndfile" "python3-module-wheel" \
+packages_main_altlinux10=("rpm-build-python3" "python3-module-pip" "python3-dev" "libsndfile" "python3-module-wheel" \
                         "libmariadb-devel" "python3-module-mysql" "rust" "rust-cargo" "openssl" "libssl-devel" \
                         "libffi-devel" "zlib" "zlib-devel" "bzip2" "bzip2-devel" "libxml2" "libxml2-devel" \
                         "libxmlsec1" "libxmlsec1-devel" "libreadline-devel" "sqlite3" \
                         "libsqlite3-devel" "xz" "liblzma" "liblzma-devel" "glibc-devel-static" "bzip2-devel" \
-                        "ffmpeg" "ffprobe" "sox" "jq")
+                        "ffmpeg" "ffprobe" "sox" "jq" "tesseract" "tesseract-devel" "tesseract-langpack-ru" "libreoffice")
+
+# Altlinux 8
+# минимально необходимый набор системных пакетов
+packages_system_altlinux8=("python3" "openssl" "curl" "wget" "ca-certificates" "git" "patch" "cmake" "boost-devel" "apt-https" "gnupg2" "lsyncd" "unzip" "dmidecode")
+
+# остальные пакеты
+packages_main_altlinux8=("rpm-build-python3" "python3-module-pip" "python3-dev" "libsndfile" "python3-module-wheel" \
+                        "libmysqld-devel" "libmysqlclient-devel" "python3-module-mysql" "rust" "rust-cargo" "openssl" \
+                        "libffi-devel" "zlib" "zlib-devel" "bzip2" "bzip2-devel" "libxml2" "libxml2-devel" \
+                        "libxmlsec1" "libxmlsec1-devel" "libreadline-devel" "sqlite3" "libssl-devel" \
+                        "libsqlite3-devel" "xz" "liblzma" "liblzma-devel" "glibc-devel-static" "bzip2-devel" \
+                        "perl-Pod-Usage" "perl-PathTools" "ffmpeg" "ffprobe" "sox" "jq" "tesseract" "tesseract-devel" "libreoffice")
 
 # в массивах модулей используется |, это нужно для фиксации версий зависимостей модулей
 # базовый набор модулей для всех установок
-modules_pip3_base=("pip" "wheel" "scikit-build|packaging==23.2|setuptools==65.5.1" "setuptools==65.5.1|setuptools_rust|ctranslate2==4.4.0|numpy==1.23.5" "cython" "tomli" "gunicorn|packaging==23.2" \
+modules_pip3_base=("pip" "wheel" "scikit-build|packaging==23.2|setuptools==65.5.1" "setuptools==65.5.1|setuptools_rust|ctranslate2==4.6.0|numpy==1.23.5" "cython==3.1.2" "tomli" "gunicorn|packaging==23.2" \
                    "Flask==2.2.5|flask-restx==1.3.0|Werkzeug==2.3.3" "pydub==0.25.1" "PyJWT" "gevent|youtokentome==1.0.3|setuptools==65.5.1" "requests")
 
 # набор модулей для всех сервисов
 modules_pip3_back=(${modules_pip3_base[@]} \
-                   "librosa==0.10.0|braceexpand==0.1.7|transformers==4.38.2|faster-whisper|tokenizers==0.15.2|huggingface-hub==0.23.3|numpy==1.23.5|onnxruntime==1.18.1|ctranslate2==4.4.0|hydra-core==1.3.2|packaging==23.2|setuptools==65.5.1" \
-                   "inflect==6.0.4|pydantic==1.10.2" "webdataset==0.1.62|pyannote.core==5.0.0|pyannote.database==5.1.0|pyannote.metrics==3.2.1|faiss_cpu==1.8.0|numpy==1.23.5|ctranslate2==4.4.0|packaging==23.2|setuptools==65.5.1" \
-                   "editdistance==0.6.2" "jiwer==3.0.1" "ipython==8.13.2" "seaborn|numpy==1.23.5|ctranslate2==4.4.0|packaging==23.2|setuptools==65.5.1" "einops" "wandb==0.18.7|setuptools==65.5.1" "pymorphy2|natasha==1.6.0|razdel" "progressbar2" \
-                   "webrtcvad" "h5py|numpy==1.23.5|ctranslate2==4.4.0|packaging==23.2|setuptools==65.5.1" "ijson" "sacrebleu|numpy==1.23.5|ctranslate2==4.4.0|packaging==23.2|setuptools==65.5.1" "rouge_score|numpy==1.23.5|ctranslate2==4.4.0|packaging==23.2|setuptools==65.5.1" "opencc==1.1.5" "pangu" "ipadic" "mecab-python3" \
-                   "pybind11" "fasttext==0.9.1|numpy==1.23.5|ctranslate2==4.4.0|packaging==23.2|setuptools==65.5.1" "sacremoses" "watchdog" "deepfilternet==0.5.6|numpy==1.23.5|packaging==23.2|ctranslate2==4.4.0|packaging==23.2|setuptools==65.5.1" "aiohttp" "python-crfsuite" "elasticsearch" "mysqlclient==2.1.1" "vk_api" \
-                   "websockets==11.0.3" "mitmproxy" "bcrypt==4.0.1" "swig==3.0.10" "python-ESL==1.4.18" "websocket==0.2.1" "websocket-client==1.8.0" "typing_extensions==4.4.0")
+                   "librosa==0.10.0|braceexpand==0.1.7|transformers==4.38.2|faster-whisper|tokenizers==0.15.2|huggingface-hub==0.23.3|numpy==1.23.5|ctranslate2==4.6.0|hydra-core==1.3.2|packaging==23.2|setuptools==65.5.1" \
+                   "inflect==6.0.4|pydantic==1.10.2" "webdataset==0.1.62|pyannote.core==5.0.0|pyannote.database==5.1.0|pyannote.metrics==3.2.1|faiss_cpu==1.8.0|numpy==1.23.5|ctranslate2==4.6.0|packaging==23.2|setuptools==65.5.1" \
+                   "editdistance==0.6.2" "jiwer==3.0.1" "ipython==8.13.2" "seaborn|numpy==1.23.5|ctranslate2==4.6.0|packaging==23.2|setuptools==65.5.1" "einops" "wandb==0.18.7|setuptools==65.5.1" "pymorphy2|natasha==1.6.0|razdel" "progressbar2" \
+                   "webrtcvad" "h5py|numpy==1.23.5|ctranslate2==4.6.0|packaging==23.2|setuptools==65.5.1" "ijson" "sacrebleu|numpy==1.23.5|ctranslate2==4.6.0|packaging==23.2|setuptools==65.5.1" "rouge_score|numpy==1.23.5|ctranslate2==4.6.0|packaging==23.2|setuptools==65.5.1" "opencc==1.1.5" "pangu" "ipadic" "mecab-python3" \
+                   "pybind11" "fasttext==0.9.1|numpy==1.23.5|ctranslate2==4.6.0|packaging==23.2|setuptools==65.5.1" "sacremoses" "watchdog" "deepfilternet==0.5.6|numpy==1.23.5|packaging==23.2|ctranslate2==4.6.0|packaging==23.2|setuptools==65.5.1" "aiohttp" "python-crfsuite" "elasticsearch==8.17.1" "mysqlclient==2.1.1" "vk_api" \
+                   "websockets==11.0.3" "mitmproxy" "bcrypt==4.0.1" "swig==3.0.10" "python-ESL==1.4.18" "websocket==0.2.1" "websocket-client==1.8.0" "typing_extensions==4.4.0" "prettytable==3.16.0" "pdf2image==1.17.0" "opencv-python==4.11.0" "pytesseract==0.3.13")
 
-# дополненый набор модулей для сервисов под CPU
+# дополненный набор модулей для сервисов под CPU
 modules_pip3_cpu=(${modules_pip3_back[@]} \
-                    "torch==2.3.1+cpu|torchaudio==2.3.1+cpu|torchvision==0.18.1+cpu|torchmetrics==1.0.3|pytorch-lightning==1.9.5|nemo-toolkit==1.20.0|sentence-transformers==2.3.0|triton==2.3.1|Werkzeug==2.3.3|sentencepiece==0.1.99|transformers==4.38.2|huggingface-hub==0.23.3|numpy==1.23.5|ctranslate2==4.4.0|packaging==23.2|setuptools==65.5.1" \
+                    "torch==2.3.1+cpu|torchaudio==2.3.1+cpu|torchvision==0.18.1+cpu|torchmetrics==1.0.3|onnxruntime==1.18.0|pytorch-lightning==1.9.5|nemo-toolkit==1.20.0|sentence-transformers==2.3.0|triton==2.3.1|Werkzeug==2.3.3|sentencepiece==0.1.99|transformers==4.38.2|huggingface-hub==0.23.3|numpy==1.23.5|ctranslate2==4.6.0|packaging==23.2|setuptools==65.5.1" \
                     "llama-cpp-python==0.3.6|numpy==1.23.5")
 
-# дополненый набор модулей для сервисов под GPU CU11
+# дополненный набор модулей для сервисов под GPU CU11
 modules_pip3_cu11=(${modules_pip3_back[@]} \
-                    "torch==2.3.1+cu118|torchaudio==2.3.1+cu118|torchvision==0.18.1+cu118|torchmetrics==1.0.3|pytorch-lightning==1.9.5|nemo-toolkit==1.20.0|sentence-transformers==2.3.0|triton==2.3.1|Werkzeug==2.3.3|sentencepiece==0.1.99|transformers==4.38.2|huggingface-hub==0.23.3|numpy==1.23.5|ctranslate2==4.4.0|packaging==23.2|setuptools==65.5.1|onnxruntime-gpu==1.19.2" \
-                    "llama-cpp-python-cu==0.3.6|numpy==1.23.5")
+                    "torch==2.3.1+cu118|torchaudio==2.3.1+cu118|torchvision==0.18.1+cu118|torchmetrics==1.0.3|pytorch-lightning==1.9.5|nemo-toolkit==1.20.0|sentence-transformers==2.3.0|triton==2.3.1|Werkzeug==2.3.3|sentencepiece==0.1.99|transformers==4.38.2|huggingface-hub==0.23.3|numpy==1.23.5|ctranslate2==4.6.0|packaging==23.2|setuptools==65.5.1|onnxruntime-gpu==1.19.2" \
+                    "llama-cpp-python==0.3.6|numpy==1.23.5")
 
-# дополненый набор модулей для сервисов под GPU CU12
+# дополненный набор модулей для сервисов под GPU CU12
 modules_pip3_cu12=(${modules_pip3_back[@]} \
-                    "torch==2.3.1+cu121|torchaudio==2.3.1+cu121|torchvision==0.18.1+cu121|torchmetrics==1.0.3|pytorch-lightning==1.9.5|nemo-toolkit==1.20.0|sentence-transformers==2.3.0|triton==2.3.1|Werkzeug==2.3.3|sentencepiece==0.1.99|transformers==4.38.2|huggingface-hub==0.23.3|numpy==1.23.5|ctranslate2==4.4.0|packaging==23.2|setuptools==65.5.1|onnxruntime-gpu==1.19.2" \
-                    "llama-cpp-python-cu==0.3.6|numpy==1.23.5")
+                    "torch==2.3.1+cu121|torchaudio==2.3.1+cu121|torchvision==0.18.1+cu121|torchmetrics==1.0.3|pytorch-lightning==1.9.5|nemo-toolkit==1.20.0|sentence-transformers==2.3.0|triton==2.3.1|Werkzeug==2.3.3|sentencepiece==0.1.99|transformers==4.38.2|huggingface-hub==0.23.3|numpy==1.23.5|ctranslate2==4.6.0|packaging==23.2|setuptools==65.5.1|onnxruntime-gpu==1.19.2" \
+                    "llama-cpp-python==0.3.6|numpy==1.23.5|nvidia-cudnn-cu12==8.9.2.26" "nvidia-cublas-cu11==11.11.3.6|nvidia-cuda-cupti-cu11==11.8.87|nvidia-cuda-nvrtc-cu11==11.8.89|nvidia-cuda-runtime-cu11==11.8.89|nvidia-cudnn-cu11==9.8.0.87|nvidia-cufft-cu11==10.9.0.58|nvidia-curand-cu11==10.3.0.86|nvidia-cusolver-cu11==11.4.1.48|nvidia-cusparse-cu11==11.7.5.86|nvidia-nccl-cu11==2.21.5|nvidia-nvtx-cu11==11.8.86")
+
+# набор модулей для исключения при glibc < 2.27
+modules_manylinux_227=("onnxruntime==1.18.0" "onnxruntime-gpu==1.19.2" "nvidia-cudnn-cu11==9.8.0.87")
 
 # набор модулей индивидуально под сервис
 # UPS и RES
-modules_pip3_ups=(${modules_pip3_base[@]} "jiwer==3.0.1" "elasticsearch" "mitmproxy" "bcrypt==4.0.1" "typing_extensions==4.4.0")
+modules_pip3_ups=(${modules_pip3_base[@]} "jiwer==3.0.1" "elasticsearch==8.17.1" "mitmproxy" "bcrypt==4.0.1" "typing_extensions==4.4.0")
 # URS
 modules_pip3_urs=(${modules_pip3_base[@]} "mysqlclient==2.1.1")
 # SES
@@ -175,6 +194,7 @@ function echo_info {
 $(grep -oEi '^(ID|ID_LIKE|VERSION_CODENAME|VERSION_ID)=["A-z0-9.]+' /etc/os-release | sed -e 's/^ID_LIKE/os_like/i' -e 's/^ID/os_id/i' -e 's/^VERSION_CODENAME/os_codename/i' -e 's/^VERSION_ID/os_version/i' | awk '{gsub("\"","",$0);print "export "tolower($0)}')
 if [[ $os_codename == "" ]]; then $(grep -oEi '^(NAME|PRETTY_NAME)=[^$]+' /etc/os-release | sed -e 's/\s/_/g' | awk '{gsub("\"","",$0);print "export "tolower($0)}'); os_codename=$(echo $pretty_name | sed "s/$name//" | grep -oE "[a-z]+"); unset name pretty_name; fi
 if [[ $os_codename == "" ]]; then os_codename=$os_version; fi
+if [[ $os_id == 'altlinux' && ${os_version%%.*} == '8' ]]; then os_id='altlinux8'; elif [[ $os_id == 'altlinux' ]]; then os_id='altlinux10'; fi
 if [[ $os_id == 'centos' && $os_version == '7' ]]; then  os_install=$os_id$os_version; elif [[ -z $os_like || $os_like == "" ]]; then os_install=$os_id; elif [[ ! -z $os_like ]]; then os_install=$(echo $os_like | grep -oEi '^[a-z]+'); unset os_like; fi
 # если возникли проблемы с определением параметров
 if [[ $os_id == "" || $os_codename == "" || $os_version == "" || $os_install == "" ]]; then echo_error "Ошибка детектирования OS"; fi
@@ -274,19 +294,21 @@ function install_repo {
         apt-get update > /dev/null 2>&1
       ;;
       rhel)
+        # проверка и выбор пакетного менеджера
+        pac_manager=$(command -v yum >/dev/null 2>&1 && echo "yum" || echo "dnf")
         # пакет основных утилит ставится заранее перед скачиванием пакетов через repotrack
-        yum install -y yum-utils || echo_error "Ошибка установки основных утилит"
-        # подключения репозирория ffmpeg для CentOS 8 и ContOS 9
+        $pac_manager install -y yum-utils || echo_error "Ошибка установки основных утилит"
+        # подключения репозирория ffmpeg для CentOS 8 и CentOS 9
         if [ $os_id == "centos" ]; then
-          yum install -y epel-release || echo_error "Ошибка подлючения repo с Epel"
-          dnf config-manager --set-enabled powertools > /dev/null 2>&1 || dnf config-manager --set-enabled crb > /dev/null 2>&1 || echo_error "Ошибка подлючения repo с FFmpeg"
-          dnf install --nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-$os_version.noarch.rpm -y 2>&1 || echo_error "Ошибка подлючения repo с FFmpeg"
-          dnf install --nogpgcheck https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-$os_version.noarch.rpm -y 2>&1 || echo_error "Ошибка подлючения repo с FFmpeg"
+          $pac_manager install -y epel-release || echo_error "Ошибка подлючения repo с Epel"
+          $pac_manager config-manager --set-enabled powertools > /dev/null 2>&1 || dnf config-manager --set-enabled crb > /dev/null 2>&1 || echo_error "Ошибка подлючения repo с FFmpeg"
+          $pac_manager install --nogpgcheck https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-$os_version.noarch.rpm -y 2>&1 || echo_error "Ошибка подлючения repo с FFmpeg"
+          $pac_manager install --nogpgcheck https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-$os_version.noarch.rpm -y 2>&1 || echo_error "Ошибка подлючения repo с FFmpeg"
         fi
         # обновление списка пакетов после добавления репы
-        yum makecache > /dev/null 2>&1
+        $pac_manager makecache > /dev/null 2>&1
       ;;
-      altlinux)
+      altlinux10|altlinux8)
         # очищаем локальный кеш пакетов
         rm -rf /var/cache/apt/archives/*.rpm &> /dev/null
         # обновление списка пакетов
@@ -320,6 +342,8 @@ gpgcheck = 0" > /etc/yum.repos.d/pve.repo
         apt-get update > /dev/null 2>&1
       ;;
       rhel)
+        # проверка и выбор пакетного менеджера
+        pac_manager=$(command -v yum >/dev/null 2>&1 && echo "yum" || echo "dnf")
         # отключаем все репозитории и включаем локальный
         echo_info "Отключаем все репозитории и подключаем локальный $int_arch_pack_dir"
         repo=$(grep -rliE "^[ #]*baseurl.+" /etc/yum.repos.d/* 2>/dev/null); [[ ! -z $repo ]] && for o in $repo; do sed -i "s|^|###pve###|g" $o > /dev/null 2>&1; done
@@ -332,7 +356,7 @@ gpgcheck = 0" > /etc/yum.repos.d/pve.repo
         # обновление списка пакетов
         yum makecache > /dev/null 2>&1
       ;;
-      altlinux)
+      altlinux10|altlinux8)
         # отключаем все репозитории и включаем локальный
         echo_info "Отключаем все репозитории и подключаем локальный $int_arch_pack_dir"
         repo=$(grep -rliE "^[ ]*rpm.+" /etc/apt/sources.list* 2>/dev/null); [[ ! -z $repo ]] && for o in $repo; do sed -i "s|^[ ]*rpm|###pve###rpm|" $o > /dev/null 2>&1; done
@@ -359,6 +383,8 @@ gpgcheck = 0" > /etc/yum.repos.d/pve.repo
         rm -f /etc/apt/sources.list.d/pve.list &> /dev/null
       ;;
       rhel)
+        # проверка и выбор пакетного менеджера
+        pac_manager=$(command -v yum >/dev/null 2>&1 && echo "yum" || echo "dnf")
         echo_info "Настройка списка репозиториев в исходное состояние"
         repo=$(grep -rliE "^###pve###$" /etc/yum.repos.d/* 2>/dev/null); [[ ! -z $repo ]] && for o in $repo; do sed -i -r "s|^(###pve###)+||" $o > /dev/null 2>&1; done
         repo=$(grep -rliE "^###pve###$" /etc/distro.repos.d/* 2>/dev/null); [[ ! -z $repo ]] && for o in $repo; do sed -i -r "s|^(###pve###)+||" $o > /dev/null 2>&1; done
@@ -408,9 +434,6 @@ function check_installed_gpu {
       echo "CUDA Driver: v"$(echo ${vCUDAd[@]} | tr ' ' '.')
       [[ ! -z "$vCUDAt" && $vCUDAt -gt $(($((${vCUDAd[0]} * 1000)) + $((${vCUDAd[1]} * 10)))) ]] && echo_error "Версия CUDA Toolkit должна быть меньше или равна версии, поддерживаемой драйвером"
     fi
-    echo_info "Проверка установки CUDnn"
-    # определяем установлен ли CUDnn
-    [[ -z "$(find /usr -iname cudnn*.h)" ]] && echo_warning "CUDnn не установлен" || echo "ОК"
   fi
 }
 
@@ -500,8 +523,8 @@ function install_pac {
       if [ "$1" == "system" ]; then
         for (( i=0; i<"${#packages_system_rhel[@]}"; i++ )); do
           echo_info "Установка ${packages_system_rhel[i]}"
-          if [ ! -z $2 ]; then yumdownloader --downloadonly --resolve --alldeps --downloaddir "$int_arch_pack_dir/$os_codename/Packages/" ${packages_system_rhel[i]} || yum install -y --downloadonly --downloaddir="$int_arch_pack_dir/$os_codename/Packages/" ${packages_system_rhel[i]} || echo_error "Ошибка загрузки ${packages_system_rhel[i]}"; fi
-          yum install --allowerasing -y ${packages_system_rhel[i]} || yum reinstall --allowerasing -y ${packages_system_rhel[i]} || echo_error "Ошибка установки ${packages_system_rhel[i]}"
+          if [ ! -z $2 ]; then yumdownloader --downloadonly --resolve --alldeps --downloaddir "$int_arch_pack_dir/$os_codename/Packages/" ${packages_system_rhel[i]} || $pac_manager install -y --downloadonly --downloaddir="$int_arch_pack_dir/$os_codename/Packages/" ${packages_system_rhel[i]} || echo_error "Ошибка загрузки ${packages_system_rhel[i]}"; fi
+          $pac_manager install --allowerasing -y ${packages_system_rhel[i]} || $pac_manager reinstall --allowerasing -y ${packages_system_rhel[i]} || echo_error "Ошибка установки ${packages_system_rhel[i]}"
         done
       # установка остальных пакетов
       # elif [ "$1" == "main" ]; then
@@ -516,12 +539,12 @@ function install_pac {
       elif [ "$1" == "main" ]; then
         for (( i=0; i<"${#packages_main_rhel[@]}"; i++ )); do
           echo_info "Установка ${packages_main_rhel[i]}"
-          if [ ! -z $2 ]; then yumdownloader --downloadonly --resolve --alldeps --downloaddir "$int_arch_pack_dir/$os_codename/Packages/" ${packages_main_rhel[i]} || yum install -y --downloadonly --downloaddir="$int_arch_pack_dir/$os_codename/Packages/" ${packages_main_rhel[i]} || echo_error "Ошибка загрузки ${packages_main_rhel[i]}"; fi
-          yum install --allowerasing -y ${packages_main_rhel[i]} || yum reinstall --allowerasing -y ${packages_main_rhel[i]} || echo_error "Ошибка установки  ${packages_main_rhel[i]}"
+          if [ ! -z $2 ]; then yumdownloader --downloadonly --resolve --alldeps --downloaddir "$int_arch_pack_dir/$os_codename/Packages/" ${packages_main_rhel[i]} || $pac_manager install -y --downloadonly --downloaddir="$int_arch_pack_dir/$os_codename/Packages/" ${packages_main_rhel[i]} || echo_error "Ошибка загрузки ${packages_main_rhel[i]}"; fi
+          $pac_manager install --allowerasing -y ${packages_main_rhel[i]} || $pac_manager reinstall --allowerasing -y ${packages_main_rhel[i]} || echo_error "Ошибка установки  ${packages_main_rhel[i]}"
         done
       fi
     ;;
-    altlinux)
+    altlinux10)
       # установка основных системных пакетов
       if [ "$1" == "system" ]; then
         # ставим последнию версию c/c++ компилятора
@@ -529,18 +552,62 @@ function install_pac {
         echo_info "Установка последней версии c/c++ компилятора"
         if [ ! -z $2 ]; then apt-get install --reinstall -d -y $app_get_lib_tmp || echo_error "Ошибка загрузки $app_get_lib_tmp"; fi
         apt-get install -y $app_get_lib_tmp || echo_error "Ошибка установки $app_get_lib_tmp"
-        for (( i=0; i<"${#packages_system_altlinux[@]}"; i++ )); do
-          echo_info "Установка ${packages_system_altlinux[i]}"
-          if [ ! -z $2 ]; then apt-get install --reinstall -d -y ${packages_system_altlinux[i]} || echo_error "Ошибка загрузки ${packages_system_altlinux[i]}"; fi
-          apt-get install -y ${packages_system_altlinux[i]} || apt-get install -y ${packages_system_altlinux[i]} --reinstall || echo_error "Ошибка установки ${packages_system_altlinux[i]}"
+        for (( i=0; i<"${#packages_system_altlinux10[@]}"; i++ )); do
+          echo_info "Установка ${packages_system_altlinux10[i]}"
+          if [ ! -z $2 ]; then apt-get install --reinstall -d -y ${packages_system_altlinux10[i]} || echo_error "Ошибка загрузки ${packages_system_altlinux10[i]}"; fi
+          apt-get install -y ${packages_system_altlinux10[i]} || apt-get install -y ${packages_system_altlinux10[i]} --reinstall || echo_error "Ошибка установки ${packages_system_altlinux10[i]}"
         done
       # установка остальных пакетов
       elif [ "$1" == "main" ]; then
-        for (( i=0; i<"${#packages_main_altlinux[@]}"; i++ )); do
-          echo_info "Установка ${packages_main_altlinux[i]}"
-          if [ ! -z $2 ]; then apt-get install --reinstall -d -y ${packages_main_altlinux[i]} || echo_error "Ошибка загрузки ${packages_main_altlinux[i]}"; fi
-          apt-get install -y ${packages_main_altlinux[i]} || apt-get install -y ${packages_main_altlinux[i]} --reinstall || echo_error "Ошибка установки ${packages_main_altlinux[i]}"
+        for (( i=0; i<"${#packages_main_altlinux10[@]}"; i++ )); do
+          echo_info "Установка ${packages_main_altlinux10[i]}"
+          if [ ! -z $2 ]; then apt-get install --reinstall -d -y ${packages_main_altlinux10[i]} || echo_error "Ошибка загрузки ${packages_main_altlinux10[i]}"; fi
+          apt-get install -y ${packages_main_altlinux10[i]} || apt-get install -y ${packages_main_altlinux10[i]} --reinstall || echo_error "Ошибка установки ${packages_main_altlinux10[i]}"
         done
+      fi
+    ;;
+    altlinux8)
+      # установка основных системных пакетов
+      if [ "$1" == "system" ]; then
+        # ставим последнию версию c/c++ компилятора
+        app_get_lib_tmp=$(apt_get_lib)
+        echo_info "Установка последней версии c/c++ компилятора"
+        if [ ! -z $2 ]; then apt-get install --reinstall -d -y $app_get_lib_tmp || echo_error "Ошибка загрузки $app_get_lib_tmp"; fi
+        apt-get install -y $app_get_lib_tmp || echo_error "Ошибка установки $app_get_lib_tmp"
+        for (( i=0; i<"${#packages_system_altlinux8[@]}"; i++ )); do
+          echo_info "Установка ${packages_system_altlinux8[i]}"
+          if [ ! -z $2 ]; then apt-get install --reinstall -d -y ${packages_system_altlinux8[i]} || echo_error "Ошибка загрузки ${packages_system_altlinux8[i]}"; fi
+          apt-get install -y ${packages_system_altlinux8[i]} || apt-get install -y ${packages_system_altlinux8[i]} --reinstall || echo_error "Ошибка установки ${packages_system_altlinux8[i]}"
+        done
+      # установка остальных пакетов
+      elif [ "$1" == "main" ]; then
+        for (( i=0; i<"${#packages_main_altlinux8[@]}"; i++ )); do
+          echo_info "Установка ${packages_main_altlinux8[i]}"
+          if [ ! -z $2 ]; then apt-get install --reinstall -d -y ${packages_main_altlinux8[i]} || echo_error "Ошибка загрузки ${packages_main_altlinux8[i]}"; fi
+          apt-get install -y ${packages_main_altlinux8[i]} || apt-get install -y ${packages_main_altlinux8[i]} --reinstall || echo_error "Ошибка установки ${packages_main_altlinux8[i]}"
+        done
+        # Проверка версии rust
+        # Если rust в системе меньше 1.56
+        rust_ver=$(echo $(rustc --version) | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+')
+        if [[ $(echo $rust_ver | cut -d. -f1) -le 1 && $(echo $rust_ver | cut -d. -f2) -lt 56 ]]; then
+          echo_info "Обнаружена старая версия rust ${rust_ver}. Версия rust ${rust_ver} удаляется."
+          apt-get remove -y rust
+          echo_info "Устанавливается новая версия rust"
+          curl -sSf "https://sh.rustup.rs" | bash -s -- -y >/dev/null 2>&1  || echo_error "Ошибка установки rust"
+          export PATH="$HOME/.cargo/bin:$PATH"
+          echo_info "Новая версия rust $(echo $(rustc --version) | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+') установлена"
+        fi
+        unset rust_ver
+        # обновление openssl
+        # если openssl в системе меньше 1.1.1
+        if [ `openssl version | grep -Eo '[0-9]\.[0-9]+\.[0-9]+'` != "1.1.1" ]; then
+          echo_info "Обнаружена старая версия OpenSSL"
+          wget https://www.openssl.org/source/openssl-1.1.1w.tar.gz || echo_info "Ошибка загрузки OpenSSL"
+          tar -xvf openssl-*.tar.gz && rm -f openssl-*.tar.gz && cd openssl-*
+          ./config --prefix=/usr --openssldir=/usr >/dev/null 2>&1 && make >/dev/null 2>&1 && make install >/dev/null 2>&1 || echo_info "Ошибка установки OpenSSL"
+          cd .. && rm -rf openssl-*
+          echo_info "Версия OpenSSL 1.1.1 установлена"
+        fi
       fi
     ;;
   esac
@@ -607,7 +674,7 @@ function install_ffmpeg {
     cd $script_dir 2> /dev/null || echo_error "$script_dir нет такой директории"
     case $os_install in
       centos7)
-        # установка происходит просто рахорхивированием архива в корень
+        # установка происходит просто разархивированием архива в корень
         echo_info "Копирование bin FFmpeg 5.1.2 из архива"
         tar jxvf $script_dir/ffmpeg-5.1.2.tar.bz2 -C / 2>/dev/null || echo_error "Ошибка копирования bin FFmpeg 5.1.2 из архива"
       ;;
@@ -623,7 +690,7 @@ function install_ffmpeg {
     cd $int_arch_dir 2> /dev/null || echo_error "$int_arch_dir нет такой директории"
     case $os_install in
       centos7)
-        # установка происходит просто рахорхивированием архива в корень
+        # установка происходит просто разархивированием архива в корень
         echo_info "Копирование bin FFmpeg 5.1.2 из архива"
         tar jxvf $int_arch_dir/ffmpeg-5.1.2.tar.bz2 -C / 2>/dev/null || echo_error "Ошибка копирования bin FFmpeg 5.1.2 из архива"
       ;;
@@ -680,12 +747,12 @@ Description: Not Available
     rhel)
       # ставим пакеты для работы с репозиторием
       echo_info "Установка createrepo"
-      yum install -y createrepo || echo_error "Ошибка установки createrepo"
+      $pac_manager install -y createrepo || echo_error "Ошибка установки createrepo"
       # обновляем метаинформации о пакетах
       echo_info "Обновление метаинформации о пакетах"
       createrepo -v $PWD/$os_codename || echo_error "Ошибка обновления метаинформации о пакетах"
     ;;
-    altlinux)
+    altlinux10|altlinux8)
       # создаем структуру каталогов репозитория и перемещаем пакеты
       mkdir -p $PWD/$os_codename/base &> /dev/null
       mkdir -p $PWD/$os_codename/RPMS.pve &> /dev/null
@@ -713,17 +780,27 @@ function list_pip3_modules {
   if [ -z $1 ]; then echo_error "Ошибка определения набора модулей Python"; fi
   # установка модулей питона из списка в массиве или из внешнего файла модулей
   if [[ -f $list_pip3_modules_ext && -z "$build_modules" ]]; then
-    echo_info "Существует внешний файл списока модулей pip3"
+    echo_info "Существует внешний файл списка модулей pip3"
     mapfile -t not_install < $list_pip3_modules_ext
   elif [[ $1 == "full" || $1 == "cpu" || $1 == "cu11" || $1 == "cu12" || $1 == "ups" || $1 == "urs" || $1 == "ses" || $1 == "online" || $1 == "offline" ]]; then
     # набор модулей
     eval not_install=("\${modules_pip3_$1[@]}")
     # проверка версии компилятора, исключаем
-    if [[ $(echo ${not_install[@]}) == *"llama-cpp-python"* && ($(g++ -std="c++17" /dev/null 2>&1) != *"collect2"* || $(g++ -dumpversion 2>/dev/null| cut -c1) -le 8) ]]; then
-      [ $1 == "qas" ] && echo_error "Ваш C++ компилятор устарел. Можорная версия должна быть >=9 с поддержкой стандарта >=C++17. Окружение для OAS не поддерживается"
-      echo_warning "Ваш C++ компилятор устарел. Можорная версия должна быть >=9 с поддержкой стандарта >=C++17. Окружение без поддержки QAS"
+    if [[ $(echo ${not_install[@]}) == *"llama-cpp-python"* && ($(g++ -std="c++17" /dev/null 2>&1) != *"collect2"* || $(g++ -dumpversion 2>/dev/null| cut -d. -f1) -le 8) ]]; then
+      [ $1 == "qas" ] && echo_error "Ваш C++ компилятор устарел. Мажорная версия должна быть >=9 с поддержкой стандарта >=C++17. Окружение для OAS не поддерживается"
+      echo_warning "Ваш C++ компилятор устарел. Мажорная версия должна быть >=9 с поддержкой стандарта >=C++17. Окружение без поддержки QAS"
       not_install=($(echo ${not_install[@]} | sed -r 's#(^| )llama-cpp-python[^ ]*##g'))
     fi
+    # Проверка версии glibc для wheel, собранных на manylinux2_27
+    glibc_ver=$(ldd --version 2>/dev/null | head -n 1 | awk '{print $NF}')
+    if [[ "${glibc_ver%%.*}" -le 2 && "${glibc_ver##*.}" -lt 27 ]]; then
+      [ $1 == "qas" ] && echo_error "Ваша основная системная библиотека glibc устарела. Мажорная версия должна быть >=2, минорная >=27. Окружение для OAS не поддерживается"
+      echo_warning "Ваша основная системная библиотека glibc устарела. Мажорная версия должна быть >=2, минорная >=27. Окружение без поддержки QAS"
+      for module in ${modules_manylinux_227[@]}; do
+        not_install=($(echo ${not_install[@]} | sed "s#"${module}"##g"))
+      done
+    fi
+    unset glibc_ver
     # 2 набора модулей
     if [[ $2 == "full" || $2 == "cpu" || $2 == "cu11" || $2 == "cu12" || $2 == "ups" || $2 == "urs" || $2 == "ses" ]]; then
       echo_info "Определение типа установки"
@@ -770,8 +847,11 @@ function download_pyenv {
   rhel)
     mv $int_arch_dir/.pyenv/sources/$python_ver_rhel/Python-$python_ver_rhel.tar.xz $int_arch_dir/.pyenv/cache
     ;;
-  altlinux)
-    mv $int_arch_dir/.pyenv/sources/$python_ver_altlinux/Python-$python_ver_altlinux.tar.xz $int_arch_dir/.pyenv/cache
+  altlinux10)
+    mv $int_arch_dir/.pyenv/sources/$python_ver_altlinux10/Python-$python_ver_altlinux10.tar.xz $int_arch_dir/.pyenv/cache
+    ;;
+  altlinux8)
+    mv $int_arch_dir/.pyenv/sources/$python_ver_altlinux8/Python-$python_ver_altlinux8.tar.xz $int_arch_dir/.pyenv/cache
     ;;
  esac
 }
@@ -792,8 +872,11 @@ function download_modules {
     rhel)
       pyenv local $python_ver_rhel
     ;;
-    altlinux)
-      pyenv local $python_ver_altlinux
+    altlinux10)
+      pyenv local $python_ver_altlinux10
+    ;;
+    altlinux8)
+      pyenv local $python_ver_altlinux8
     ;;
   esac
   # удаляем старый кеш pip
@@ -862,11 +945,12 @@ function install_pyenv {
   # онлайн установка
   if [ $1 == "online" ]; then
     echo_info "Загрузка и установка Pyenv"
-    rm -rf $HOME/.pyenv && export_pyenv_enviroment >/dev/null 2>&1 && for i in {1..3}; do curl --connect-timeout 15 https://pyenv.run 2>/dev/null && break || sleep 0.5; done | bash 2>&1 && export_pyenv_enviroment >/dev/null 2>&1 && sleep 0.5 || echo_error "Ошибка загрузки и установки Pyenv"
+    rm -rf $HOME/.pyenv && export_pyenv_enviroment >/dev/null 2>&1 && for i in {1..3}; do curl --connect-timeout 15 https://pyenv.run 2>/dev/null && break || sleep 0.5; done | bash 2>&1 && export_pyenv_enviroment >/dev/null 2>&1 && sleep 0.5 || \
+    for i in {1..3}; do curl --connect-timeout 15 https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer 2>/dev/null && break || sleep 0.5; done | bash 2>&1 && export_pyenv_enviroment >/dev/null 2>&1 && sleep 0.5 || echo_error "Ошибка загрузки и установки Pyenv"
     # установка питона с сохранением исходников ключ -k
     case $os_install in
       centos7)
-        # создание дерриктории
+        # создание директории
         mkdir -p "/root/.pyenv/versions/$python_ver_centos/bin"
         echo_info "Pyenv: загрузка и установка версии Python$python_ver_centos"
         # проверка наличия нужной версии питона в репозитории pyenv
@@ -877,7 +961,7 @@ function install_pyenv {
         fi
       ;;
       debian)
-        # создание дерриктории
+        # создание директории
         mkdir -p "/root/.pyenv/versions/$python_ver_debian/bin"
         echo_info "Pyenv: загрузка и установка версии Python$python_ver_debian"
         if [ "`pyenv install --list 2> /dev/null | sed 's/^ *//g' | grep ^$python_ver_debian`" == "$python_ver_debian" ]; then
@@ -887,7 +971,7 @@ function install_pyenv {
         fi
       ;;
       rhel)
-        # создание дерриктории
+        # создание директории
         mkdir -p "/root/.pyenv/versions/$python_ver_rhel/bin"
         echo_info "Pyenv: загрузка и установка версии Python$python_ver_rhel"
         if [ "`pyenv install --list 2> /dev/null | sed 's/^ *//g' | grep ^$python_ver_rhel`" == "$python_ver_rhel" ]; then
@@ -896,14 +980,24 @@ function install_pyenv {
           echo_error "Pyenv: нет такой версии Python$python_ver_rhel"
         fi
       ;;
-      altlinux)
-        # создание дерриктории
-        mkdir -p "/root/.pyenv/versions/$python_ver_altlinux/bin"
-        echo_info "Pyenv: загрузка и установка версии Python$python_ver_altlinux"
-        if [ "`pyenv install --list 2> /dev/null | sed 's/^ *//g' | grep ^$python_ver_altlinux`" == "$python_ver_altlinux" ]; then
-          pyenv install -k -f $python_ver_altlinux 2>&1
+      altlinux10)
+        # создание директории
+        mkdir -p "/root/.pyenv/versions/$python_ver_altlinux10/bin"
+        echo_info "Pyenv: загрузка и установка версии Python$python_ver_altlinux10"
+        if [ "`pyenv install --list 2> /dev/null | sed 's/^ *//g' | grep ^$python_ver_altlinux10`" == "$python_ver_altlinux10" ]; then
+          pyenv install -k -f $python_ver_altlinux10 2>&1
          else
-          echo_error "Pyenv: нет такой версии Python$python_ver_altlinux"
+          echo_error "Pyenv: нет такой версии Python$python_ver_altlinux10"
+        fi
+      ;;
+      altlinux8)
+        # создание директории
+        mkdir -p "/root/.pyenv/versions/$python_ver_altlinux8/bin"
+        echo_info "Pyenv: загрузка и установка версии Python$python_ver_altlinux8"
+        if [ "`pyenv install --list 2> /dev/null | sed 's/^ *//g' | grep ^$python_ver_altlinux8`" == "$python_ver_altlinux8" ]; then
+          pyenv install -k -f $python_ver_altlinux8 2>&1
+         else
+          echo_error "Pyenv: нет такой версии Python$python_ver_altlinux8"
         fi
       ;;
     esac
@@ -940,12 +1034,20 @@ function install_pyenv {
             echo_error "Pyenv: нет такой версии Python$python_ver_rhel"
           fi
         ;;
-        altlinux)
-          echo_info "Pyenv: установка версии Python$python_ver_altlinux"
-          if [ "`pyenv install --list | sed 's/^ *//g' | grep ^$python_ver_altlinux`" == "$python_ver_altlinux" ]; then
-            pyenv install -s -f $python_ver_altlinux 2>&1
+        altlinux10)
+          echo_info "Pyenv: установка версии Python$python_ver_altlinux10"
+          if [ "`pyenv install --list | sed 's/^ *//g' | grep ^$python_ver_altlinux10`" == "$python_ver_altlinux10" ]; then
+            pyenv install -s -f $python_ver_altlinux10 2>&1
           else
-            echo_error "Pyenv: нет такой версии Python$python_ver_altlinux"
+            echo_error "Pyenv: нет такой версии Python$python_ver_altlinux10"
+          fi
+        ;;
+        altlinux8)
+          echo_info "Pyenv: установка версии Python$python_ver_altlinux8"
+          if [ "`pyenv install --list | sed 's/^ *//g' | grep ^$python_ver_altlinux8`" == "$python_ver_altlinux8" ]; then
+            pyenv install -s -f $python_ver_altlinux8 2>&1
+          else
+            echo_error "Pyenv: нет такой версии Python$python_ver_altlinux8"
           fi
         ;;
       esac
@@ -971,8 +1073,11 @@ function install_pve {
       rhel)
         pyenv local $python_ver_rhel
       ;;
-      altlinux)
-        pyenv local $python_ver_altlinux
+      altlinux10)
+        pyenv local $python_ver_altlinux10
+      ;;
+      altlinux8)
+        pyenv local $python_ver_altlinux8
       ;;
         esac
     # создание окружения на базе питона
@@ -1034,9 +1139,13 @@ function install_pve {
         pyenv local $python_ver_rhel
         python_ver_check=$python_ver_rhel
       ;;
-      altlinux)
-        pyenv local $python_ver_altlinux
-        python_ver_check=$python_ver_altlinux
+      altlinux10)
+        pyenv local $python_ver_altlinux10
+        python_ver_check=$python_ver_altlinux10
+      ;;
+      altlinux8)
+        pyenv local $python_ver_altlinux8
+        python_ver_check=$python_ver_altlinux8
       ;;
     esac
     # создание виртуального питон окружения в папке
@@ -1050,7 +1159,7 @@ function install_pve {
     fi
     source $2/bin/activate
       f_done=0
-      # проверка на правельную версию Python в окружение, нет смысла выкачивать модули если не совпадает
+      # проверка на правильную версию Python в окружении, нет смысла выкачивать модули если не совпадает
       [ $(python3 --version | grep -c "$python_ver_check") -eq 0 ] && echo_error "Ошибка, установленная версия Python, окружения, не совпадает с $python_ver_check"
       for i in {1..3}; do curl -sS --connect-timeout 15 https://bootstrap.pypa.io/pip/get-pip.py 2>/dev/null && break || sleep 0.5; done | python3
       # обновление pip3
